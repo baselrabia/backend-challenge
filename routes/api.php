@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::group(['middleware' => 'api'], function () {
+
+
+    // auth routes
+    Route::prefix('/auth')->namespace('Auth')->group(function () {
+        Route::post('login', [LoginController::class, 'login'])->name('auth_login');
+
+        // authenticated routes
+        Route::group(['middleware' => 'auth'], function () {
+            Route::post('logout', [LoginController::class, 'logout'])->name('auth_logout');
+        });
+    });
+
+    // user routes
+    Route::prefix('/users')->namespace('User')->group(function () {
+        // authenticated routes
+        Route::group(['middleware' => 'auth'], function () {
+            Route::get('/', [UserController::class, 'index'])->name('users_list');
+            // Route::post('/', [UserController::class, 'store'])->name('users_store');
+            // Route::put('/{id}', [UserController::class, 'edit'])->name('users_edit');
+            // Route::get('/{id}', [UserController::class, 'show'])->name('users_show');
+
+
+        });
+    });
 });
