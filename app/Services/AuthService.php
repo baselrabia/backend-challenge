@@ -90,15 +90,17 @@ class AuthService
     {
         $currentUser = auth()->user();
 
-        $permissions = $currentUser->allPermissions()->pluck('name');
+        //$permissions = $currentUser->allPermissions()->pluck('name') ?? [];
 
  
         return [
             'id' => $currentUser->id,
-            'permissions' => $permissions,
+            'name' => $currentUser->name,
+            'email' => $currentUser->email,
+            'permissions' => $permissions ?? [],
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL(), 
+            'expires_in' => auth()->factory()->getTTL() * 60, 
         ];
     }
 

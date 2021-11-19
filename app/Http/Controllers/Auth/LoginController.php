@@ -6,15 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
 use Illuminate\Http\Response;
-use App\Models\User as Admin;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Auth\Events\Failed;
-use Illuminate\Auth\Events\Login;
-
 
 class LoginController extends Controller
 {
-    /**@var AuthService $authSerfvice instance of auth service */
+    /**@var AuthService $authService instance of auth service */
     public AuthService $authService;
 
     /**
@@ -40,13 +35,9 @@ class LoginController extends Controller
         }
         
         if (! $token = $this->authService->userLogin($request->email, $request->password)) {
-            $user = Admin::query()->where('email', $request->email)->first();
-            Event::dispatch(new Failed('api', $user, []));
-
-            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+             return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
-        Event::dispatch(new Login('api', auth()->user(), false));
         return response()->json(['message' => 'Logged in successfully.', 'data' => $token]);
     }
 
@@ -71,22 +62,5 @@ class LoginController extends Controller
     }
 
 
-    public function resendVerifyEmail($email)
-    {
-        try {
-            return $this->authService->resendVerificationEmail($email);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Something wrong.', 'errors' => [$e->getMessage()]], Response::HTTP_EXPECTATION_FAILED);
-        }
-    }
 
-    public function verifyEmail($email, $code)
-    {
-        try {
-            $verified = $this->authService->verifyEmail($email, $code);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Something wrong.', 'errors' => [$e->getMessage()]], Response::HTTP_EXPECTATION_FAILED);
-        }
-        return redirect(config('app.front_url') . ($verified ? '/confirmed' : '/not-confirmed'));
-    }
 }

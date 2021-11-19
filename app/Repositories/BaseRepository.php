@@ -80,6 +80,10 @@ class BaseRepository implements RepositoryInterface
         return $this->model->first();
     }
 
+    public function getFirstModelWhere($columnName, $columnValue)
+    {
+        return $this->model->firstWhere($columnName, $columnValue);
+    }
 
     public function query()
     {
