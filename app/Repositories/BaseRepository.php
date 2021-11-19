@@ -21,7 +21,7 @@ class BaseRepository implements RepositoryInterface
     }
 
     public function create($credential) :Model
-    {
+    {      
         return $this->model->create($credential);
     }
 
@@ -43,6 +43,11 @@ class BaseRepository implements RepositoryInterface
     public function all() :Collection
     {
         return $this->model->all();
+    }
+
+    public function select($data): Collection
+    {
+        return $this->model->select($data)->get();
     }
 
     public function filter($filters) :Collection

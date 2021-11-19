@@ -13,8 +13,8 @@ class ViewUserResource extends JsonResource
             'id'           => $this->id,
             'name'         => $this->name,
             "email"        => $this->email,
-            "group_id"     => $this->group  ? $this->group->role->id : null,
-            "group_name"   => $this->group  ? $this->group->role->display_name : null,
+            'roles'        => $this->roles->pluck('name'),
+            'permissions'  => $this->permissions->pluck('name'),
 
 
             'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:m:s') : '',

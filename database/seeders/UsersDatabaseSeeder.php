@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +31,17 @@ class UsersDatabaseSeeder extends Seeder
             'remember_token'    => Str::random(10),
         ]);
 
+        $role = Role::firstOrCreate(['name' => 'super']);
+        $SuperAdmin = User::find(1);
+        $SuperAdmin->assignRole($role->name);
+
+        Permission::create(['name' => 'list-users']);
+        Permission::create(['name' => 'list-permissions']);
+        Permission::create(['name' => 'list-roles']);
+        Permission::create(['name' => 'view-home']);
+        Permission::create(['name' => 'view-dashboard']);
+        Permission::create(['name' => 'view-Post']);
+        Permission::create(['name' => 'upload-photo']);
 
         for ($i = 1; $i <= 5; $i++) {
             DB::table('users')->insert([

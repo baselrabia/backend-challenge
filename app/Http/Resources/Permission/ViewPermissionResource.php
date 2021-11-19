@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Resources\Role;
+namespace App\Http\Resources\Permission;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ViewRoleResource extends JsonResource
+class ViewPermissionResource extends JsonResource
 {
     public function toArray($request)
     {
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'users' => $this->users->pluck('name'),
-            'permissions' => $this->permissions->pluck('name'),
+            'roles' => $this->roles->pluck('name'),
         ];
+        
     }
 }

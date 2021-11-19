@@ -88,16 +88,15 @@ class AuthService
      */
     protected function prepareToken($token)
     {
-        $currentUser = auth()->user();
-
-        //$permissions = $currentUser->allPermissions()->pluck('name') ?? [];
+        $user = auth()->user();
 
  
         return [
-            'id' => $currentUser->id,
-            'name' => $currentUser->name,
-            'email' => $currentUser->email,
-            'permissions' => $permissions ?? [],
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->roles->pluck('name'),
+            'permissions' => $user->permissions->pluck('name'),
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60, 
