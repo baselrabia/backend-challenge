@@ -69,6 +69,8 @@ the App build using [Laravel php framework](https://Laravel.com) with the help o
 -   edit the configuration of the database in the `.env` file
 -   Run the command line for making the migration of the database and seeding data <br>
     `php artisan migrate --seed`
+-   Configure the Jwt key secret by run this line <br>
+    `php artisan jwt:secret `
 
 ## Starting the application
 
